@@ -1,5 +1,6 @@
 package javapractice;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
@@ -114,7 +115,7 @@ class Contact{
 
 public class AddressBook 
 {
-    private Contact contact;
+    private ArrayList<Contact> contacts=new ArrayList<Contact>();
     Scanner sc=new Scanner(System.in);
 
 
@@ -139,16 +140,22 @@ public class AddressBook
         String email=sc.nextLine();
         
       
-        contact=new Contact(firstName, lastName, address, city, state, zip, phoneNumber, email);
-        
+        Contact contact=new Contact(firstName, lastName, address, city, state, zip, phoneNumber, email);
+        contacts.add(contact);
         log.info("A new contact has been created in the address book");
         log.info("first name: "+contact.getFirstName()+"\nlast name: "+contact.getLastName()+"\naddress: "+contact.getAddress()+"\ncity: "+contact.getCity()+"\nstate: "+contact.getZip()+"\nphone number: "+contact.getPhoneNumber()+"\nEmail: "+contact.getEmail());     
        
     }
+
+    void printAddressBook(){
+        for (int i = 0; i < contacts.size(); i++) 
+        log.info("first name: "+contacts.get(i).getFirstName()+"\nlast name: "+contacts.get(i).getLastName()+"\naddress: "+contacts.get(i).getAddress()+"\ncity: "+contacts.get(i).getCity()+"\nstate: "+contacts.get(i).getZip()+"\nphone number: "+contacts.get(i).getPhoneNumber()+"\nEmail: "+contacts.get(i).getEmail());           
+    }
     public void startProgram(){
         while(true){
             log.info("1.Create a new contact in the address book");
-            log.info("6.Exit");
+            log.info("6.Print the address book");
+            log.info("7.Exit");
             log.info("enter your choice: ");
             int choice=sc.nextInt();
             switch(choice){
@@ -156,6 +163,10 @@ public class AddressBook
                 createContact();
                 break;
                 case 6:
+                log.info("Printing the address book");
+                printAddressBook();
+                break;
+                case 7:
                 log.info("Exiting program......");
                 return;
                 default:
