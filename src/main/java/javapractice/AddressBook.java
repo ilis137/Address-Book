@@ -115,11 +115,11 @@ class Contact{
 public class AddressBook 
 {
     private Contact contact;
-
+    Scanner sc=new Scanner(System.in);
 
 
     public void createContact(){
-        Scanner sc=new Scanner(System.in);
+     
         log.info("-------- Enter the details of contact ---------");
         log.info("Enter The first name: ");
         String firstName=sc.nextLine();
@@ -146,7 +146,25 @@ public class AddressBook
        
     }
     public void startProgram(){
-        createContact();
+        while(true){
+            log.info("1.Create a new contact in the address book");
+            log.info("6.Exit");
+            log.info("enter your choice: ");
+            int choice=sc.nextInt();
+            switch(choice){
+                case 1:
+                createContact();
+                break;
+                case 6:
+                log.info("Exiting program......");
+                return;
+                default:
+                log.info("enter one of the options above");
+                break;
+            }
+           
+        }
+       
     }
     private static final Logger log = LogManager.getLogger(AddressBook.class);
     public static void main( String[] args )
