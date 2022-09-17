@@ -48,6 +48,7 @@ public class AddressBook {
             String currentName = contact.getFirstName() + " " + contact.getLastName();
             if (currentName.equals(name)) {
                 matchedContact = contact;
+                break;
             }
         }
         return matchedContact;
@@ -143,22 +144,43 @@ public class AddressBook {
         } else {
             log.info("contact does not exist");
         }
-      
+
+    }
+
+    void deleteContact(String name) {
+
+        Contact contact = searchContact(name);
+        if (contact != null) {
+            int index = contacts.indexOf(contact);
+            Contact deletedContact = contacts.remove(index);
+            if(deletedContact.equals(contact)){
+                log.info("contact was deleted succesfully");
+            }
+        }else{
+            log.info("contact does not exist");
+        }
 
     }
 
     void printAddressBook() {
-        for (int i = 0; i < contacts.size(); i++)
+        if(contacts.size()>0){
+            for (int i = 0; i < contacts.size(); i++)
             log.info("first name: " + contacts.get(i).getFirstName() + "\nlast name: " + contacts.get(i).getLastName()
                     + "\naddress: " + contacts.get(i).getAddress() + "\ncity: " + contacts.get(i).getCity()
                     + "\nstate: " + contacts.get(i).getZip() + "\nphone number: " + contacts.get(i).getPhoneNumber()
                     + "\nEmail: " + contacts.get(i).getEmail());
+        }else{
+            log.info("Address book is empty");
+        }
+     
     }
 
     public void startProgram() {
         while (true) {
+            String name;
             log.info("1.Create a new contact in the address book");
             log.info("2.Edit a contact");
+            log.info("3.Delete a contact");
             log.info("6.Print the address book");
             log.info("7.Exit");
             log.info("enter your choice: ");
@@ -166,14 +188,19 @@ public class AddressBook {
             sc.nextLine();
             switch (choice) {
                 case 1:
-
                     createContact();
                     break;
                 case 2:
                     log.info("enter the name of the contact to edit:");
-                    String name = sc.nextLine();
+                     name = sc.nextLine();
                     editContact(name);
                     break;
+                case 3:
+                    log.info("enter the name of the contact to delete: ");
+                    name = sc.nextLine();
+                    deleteContact(name);
+                    break;
+                
                 case 6:
                     log.info("Printing the address book");
                     printAddressBook();
