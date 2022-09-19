@@ -181,7 +181,7 @@ public class AddressBook {
             log.info("3.Delete a contact");
             log.info("4.Create multiple contacts");
             log.info("6.Print the address book");
-            log.info("7.Exit");
+            log.info("7.Close Address Book");
             log.info("enter your choice: ");
             int choice = sc.nextInt();
             sc.nextLine();
@@ -208,7 +208,7 @@ public class AddressBook {
                     printAddressBook();
                     break;
                 case 7:
-                    log.info("Exiting program......");
+                    log.info("Closing address book......");
                     return;
                 default:
                     log.info("enter one of the options above");
