@@ -7,11 +7,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class AddressBook {
+    //List of contacts in a addressbook
     private ArrayList<Contact> contacts = new ArrayList<Contact>();
     Scanner sc = new Scanner(System.in);
 
+    //create a contact in address book
     public Contact createContact() {
-
+        //enters all the details of the contact
         log.info("-------- Enter the details of contact ---------");
         log.info("Enter The first name: ");
         String firstName = sc.nextLine();
@@ -31,15 +33,16 @@ public class AddressBook {
         log.info("Enter the email: ");
         String email = sc.nextLine();
 
-        Contact contact = new Contact(firstName, lastName, address, city, state, zip, phoneNumber, email);
+        Contact contact = new Contact(firstName, lastName, address, city, state, zip, phoneNumber, email);//craetes new contact with contact constructor
         contacts.add(contact);
         log.info("A new contact has been created in the address book");
         log.info("first name: " + contact.getFirstName() + "\nlast name: " + contact.getLastName() + "\naddress: "
                 + contact.getAddress() + "\ncity: " + contact.getCity() + "\nstate: " + contact.getZip()
-                + "\nphone number: " + contact.getPhoneNumber() + "\nEmail: " + contact.getEmail());
+                + "\nphone number: " + contact.getPhoneNumber() + "\nEmail: " + contact.getEmail());//prints newly added contact
         return contact;
     }
 
+    //search a contact in address book with the name of the contact 
     public Contact searchContact(String name) {
         Contact matchedContact = null;
         for (int i = 0; i < contacts.size(); i++) {
@@ -50,12 +53,13 @@ public class AddressBook {
                 break;
             }
         }
+        //searches for the contact with name if found returns the contact object or null
         return matchedContact;
     }
-
+    //edit a contact with the name provided.
     public void editContact(String name) {
-        Contact contact = searchContact(name);
-        if (contact != null) {
+        Contact contact = searchContact(name);//searches for the contact in the address book first
+        if (contact != null) {//if there is contact the asks for the relevant field to be edited and asks for the field to be updated
             log.info("1.Change the first name");
             log.info("2.Change the last name");
             log.info("3.Change the address");
@@ -130,13 +134,13 @@ public class AddressBook {
         }
 
     }
-
+    //delete a contact with nme of the contact
     void deleteContact(String name) {
 
         Contact contact = searchContact(name);
-        if (contact != null) {
-            int index = contacts.indexOf(contact);
-            Contact deletedContact = contacts.remove(index);
+        if (contact != null) {//if contact does exist then contact is removed from contcts arraylist
+            int index = contacts.indexOf(contact);//gets the index of the contact in contacts array list
+            Contact deletedContact = contacts.remove(index);//removes contact
             if (deletedContact.equals(contact)) {
                 log.info("contact was deleted succesfully");
             }
@@ -146,9 +150,11 @@ public class AddressBook {
 
     }
 
+    //add multiple contacts in the address book
     void addMultipleContacts() {
         String answer = "Y";
         ArrayList<Contact> contacts=new ArrayList<Contact>();
+        //Asks the user if you want to create anotehr contact.if answer is yes .new contact is created by calling the create contact method which creates invidual contact
         while (answer.equals("Y") || answer.equals("Yes") || answer.equals("yes") || answer.equals("y") || answer.equals("yes")) {
             Contact contact=createContact();
             contacts.add(contact);
@@ -158,9 +164,9 @@ public class AddressBook {
        
 
     }
-
+    //print the address book
     void printAddressBook() {
-        if (contacts.size() > 0) {
+        if (contacts.size() > 0) {//iterate through contacts list and print he details of each contact if there are any contacts 
             for (int i = 0; i < contacts.size(); i++)
                 log.info("first name: " + contacts.get(i).getFirstName() + "\nlast name: "
                         + contacts.get(i).getLastName()
@@ -168,11 +174,13 @@ public class AddressBook {
                         + "\nstate: " + contacts.get(i).getZip() + "\nphone number: " + contacts.get(i).getPhoneNumber()
                         + "\nEmail: " + contacts.get(i).getEmail());
         } else {
-            log.info("Address book is empty");
+            log.info("Address book is empty");//else print empty address book
         }
 
     }
 
+
+    //program starts from here .asks for option from the user to perform a task
     public void startProgram() {
         while (true) {
             String name;
@@ -180,8 +188,8 @@ public class AddressBook {
             log.info("2.Edit a contact");
             log.info("3.Delete a contact");
             log.info("4.Create multiple contacts");
-            log.info("6.Print the address book");
-            log.info("7.Close Address Book");
+            log.info("5.Print the address book");
+            log.info("6.Close Address Book");
             log.info("enter your choice: ");
             int choice = sc.nextInt();
             sc.nextLine();
@@ -203,11 +211,11 @@ public class AddressBook {
                     log.info("Add multiple contacts");
                     addMultipleContacts();
                     break;
-                case 6:
+                case 5:
                     log.info("Printing the address book");
                     printAddressBook();
                     break;
-                case 7:
+                case 6:
                     log.info("Closing address book......");
                     return;
                 default:

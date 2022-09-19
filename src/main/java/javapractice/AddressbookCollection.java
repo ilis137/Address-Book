@@ -11,6 +11,8 @@ public class AddressbookCollection {
   private static final Logger log = LogManager.getLogger(AddressBook.class);
   Scanner sc = new Scanner(System.in);
 
+
+  // open a address book with name provided as paramater.it searches for the address book and starts it.
   void openAddressBook(String name) {
     AddressBook addressbook = directories.get(name);
 
@@ -22,6 +24,7 @@ public class AddressbookCollection {
     }
   }
 
+  // Add adddress book accepts a name for the address book and instantiates new address book andadds them to ad ictionary
   void AddAddressBook() {
 
     log.info("Enter address book name");
@@ -39,7 +42,7 @@ public class AddressbookCollection {
       return;
     }
   }
-
+//first funtion to be called .asks for the option from the user.
   void startProgram() {
 
     while (true) {
