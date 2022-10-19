@@ -5,12 +5,15 @@ import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.appender.ConfigurationFactoryData;
 
 public class AddressBook {
     //List of contacts in a addressbook
     private ArrayList<Contact> contacts = new ArrayList<Contact>();
     Scanner sc = new Scanner(System.in);
 
+
+    
     //create a contact in address book
     public Contact createContact() {
         //enters all the details of the contact
@@ -34,14 +37,32 @@ public class AddressBook {
         String email = sc.nextLine();
 
         Contact contact = new Contact(firstName, lastName, address, city, state, zip, phoneNumber, email);//craetes new contact with contact constructor
-        contacts.add(contact);
+        if(!checkDuplicacy(contact)){
+            contacts.add(contact);
         log.info("A new contact has been created in the address book");
         log.info("first name: " + contact.getFirstName() + "\nlast name: " + contact.getLastName() + "\naddress: "
                 + contact.getAddress() + "\ncity: " + contact.getCity() + "\nstate: " + contact.getZip()
                 + "\nphone number: " + contact.getPhoneNumber() + "\nEmail: " + contact.getEmail());//prints newly added contact
-        return contact;
+                return contact;
+        }
+        log.info("The provided contact already exists");
+        return null;
     }
 
+    public boolean checkDuplicacy(Contact contact){
+        boolean[] duplicate=new boolean[1];
+        Contact[] contactArr=new Contact[1];
+        duplicate[0]=false;
+        contactArr[0]=contact;
+       
+        contacts.forEach(currentContact->{
+            if(currentContact.equals(contactArr[0])){
+                duplicate[0]=true;
+            }
+        });
+
+        return duplicate[0];
+    }
     //search a contact in address book with the name of the contact 
     public Contact searchContact(String name) {
         Contact matchedContact = null;
