@@ -56,9 +56,7 @@ public class AddressbookCollection {
       addressBook.getPersonsByCityState(persons, locationName);
       log.info("Persons in address book "+directory.getKey()+" in "+locationName+" are: ");
       persons.forEach(person->{
-        log.info("first name: " + person.getFirstName() + "\nlast name: " + person.getLastName() + "\naddress: "
-        + person.getAddress() + "\ncity: " + person.getCity() + "\nstate: " + person.getZip()
-        + "\nphone number: " + person.getPhoneNumber() + "\nEmail: " + person.getEmail());//prints newly added contact
+        log.info("first name: " + person.getFirstName() + "\nlast name: " + person.getLastName());
       });
     }
   }
