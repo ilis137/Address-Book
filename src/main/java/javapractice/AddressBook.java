@@ -1,6 +1,8 @@
 package javapractice;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
@@ -10,6 +12,8 @@ import org.apache.logging.log4j.core.appender.ConfigurationFactoryData;
 public class AddressBook {
     //List of contacts in a addressbook
     private ArrayList<Contact> contacts = new ArrayList<Contact>();
+    private HashMap<String,ArrayList<Contact>> cityDirectory=new HashMap<>();
+    private HashMap<String,ArrayList<Contact>> stateDirectory=new HashMap<>();
     Scanner sc = new Scanner(System.in);
 
 
@@ -39,6 +43,24 @@ public class AddressBook {
         Contact contact = new Contact(firstName, lastName, address, city, state, zip, phoneNumber, email);//craetes new contact with contact constructor
         if(!checkDuplicacy(contact)){
             contacts.add(contact);
+            if(cityDirectory.containsKey(city)){
+                ArrayList<Contact> cityPersonList=cityDirectory.get(city);
+                cityPersonList.add(contact);            
+            }else{
+                ArrayList<Contact> cityPersonList=new ArrayList<>();
+                cityPersonList.add(contact);
+                cityDirectory.put(city,cityPersonList);
+            }
+
+            if(stateDirectory.containsKey(state)){
+                ArrayList<Contact> statePersonList=stateDirectory.get(state);
+                statePersonList.add(contact);            
+            }else{ 
+                ArrayList<Contact> statePersonList=new ArrayList<>();
+                statePersonList.add(contact);
+                stateDirectory.put(state,statePersonList);
+            }
+          
         log.info("A new contact has been created in the address book");
         log.info("first name: " + contact.getFirstName() + "\nlast name: " + contact.getLastName() + "\naddress: "
                 + contact.getAddress() + "\ncity: " + contact.getCity() + "\nstate: " + contact.getZip()
@@ -189,13 +211,40 @@ public class AddressBook {
 
     }
 
-
+    /*
+   * @param location-String doesn't matter city or state,persons -ArrayList<Contact>
+   * @describe prints all the people in the require city or stae
+   */
     public void getPersonsByCityState(ArrayList<Contact> persons,String locationName){
         contacts.stream().filter(contact->{
+            
             return (contact.getCity().equals(locationName) ||contact.getState().equals(locationName));
         }).forEach(contact->{
             persons.add(contact);
-        });;
+        });
+    }
+
+
+    public void getPersonsByLocationDictionary(String locationName,String locationType){
+       if(locationType=="city"){
+        ArrayList<Contact> cityPersonList=cityDirectory.get(locationName);
+        log.info("persons in the city "+locationName+" are: ");
+        cityPersonList.forEach(person->{
+            log.info("first name: " + person.getFirstName() + "\nlast name: " + person.getLastName() + "\naddress: "
+                + person.getAddress() + "\ncity: " + person.getCity() + "\nstate: " + person.getZip()
+                + "\nphone number: " + person.getPhoneNumber() + "\nEmail: " + person.getEmail());
+       
+        }); 
+       }else{
+        ArrayList<Contact> statePersonList=stateDirectory.get(locationName);
+        log.info("person in the State "+locationName+" are: ");
+        statePersonList.forEach(person->{
+            log.info("first name: " + person.getFirstName() + "\nlast name: " + person.getLastName() + "\naddress: "
+                + person.getAddress() + "\ncity: " + person.getCity() + "\nstate: " + person.getZip()
+                + "\nphone number: " + person.getPhoneNumber() + "\nEmail: " + person.getEmail());
+       
+        }); 
+       }
     }
     //print the address book
     void printAddressBook() {
@@ -216,13 +265,15 @@ public class AddressBook {
     //program starts from here .asks for option from the user to perform a task
     public void startProgram() {
         while (true) {
-            String name;
+            String name,city,state;
             log.info("1.Create a new contact in the address book");
             log.info("2.Edit a contact");
             log.info("3.Delete a contact");
             log.info("4.Create multiple contacts");
             log.info("5.Print the address book");
-            log.info("6.Close Address Book");
+            log.info("6.View Persons by city");
+            log.info("7.View Persons by state");
+            log.info("8.Close Address Book");
             log.info("enter your choice: ");
             int choice = sc.nextInt();
             sc.nextLine();
@@ -249,8 +300,19 @@ public class AddressBook {
                     printAddressBook();
                     break;
                 case 6:
+                    log.info("enter the city: ");
+                    city=sc.nextLine();
+                    getPersonsByLocationDictionary(city, "city");
+                    break;
+                case 7:
+                    log.info("enter the state: ");
+                    state=sc.nextLine();
+                    getPersonsByLocationDictionary(state, "state");
+                    break;
+                case 8:
                     log.info("Closing address book......");
                     return;
+                
                 default:
                     log.info("enter one of the options above");
                     break;
