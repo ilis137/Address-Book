@@ -48,7 +48,10 @@ public class AddressBook {
         log.info("The provided contact already exists");
         return null;
     }
-
+    /*@param - contact
+     * @describe method to check uniqueness of contact by name in contact list
+     * @returns ubniqueness - boolean value
+     */
     public boolean checkDuplicacy(Contact contact){
         boolean[] duplicate=new boolean[1];
         Contact[] contactArr=new Contact[1];
@@ -184,6 +187,15 @@ public class AddressBook {
         }
        
 
+    }
+
+
+    public void getPersonsByCityState(ArrayList<Contact> persons,String locationName){
+        contacts.stream().filter(contact->{
+            return (contact.getCity().equals(locationName) ||contact.getState().equals(locationName));
+        }).forEach(contact->{
+            persons.add(contact);
+        });;
     }
     //print the address book
     void printAddressBook() {
