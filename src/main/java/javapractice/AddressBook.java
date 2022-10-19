@@ -10,17 +10,15 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.appender.ConfigurationFactoryData;
 
 public class AddressBook {
-    //List of contacts in a addressbook
+    // List of contacts in a addressbook
     private ArrayList<Contact> contacts = new ArrayList<Contact>();
-    private HashMap<String,ArrayList<Contact>> cityDirectory=new HashMap<>();
-    private HashMap<String,ArrayList<Contact>> stateDirectory=new HashMap<>();
+    private HashMap<String, ArrayList<Contact>> cityDirectory = new HashMap<>();
+    private HashMap<String, ArrayList<Contact>> stateDirectory = new HashMap<>();
     Scanner sc = new Scanner(System.in);
 
-
-    
-    //create a contact in address book
+    // create a contact in address book
     public Contact createContact() {
-        //enters all the details of the contact
+        // enters all the details of the contact
         log.info("-------- Enter the details of contact ---------");
         log.info("Enter The first name: ");
         String firstName = sc.nextLine();
@@ -40,55 +38,65 @@ public class AddressBook {
         log.info("Enter the email: ");
         String email = sc.nextLine();
 
-        Contact contact = new Contact(firstName, lastName, address, city, state, zip, phoneNumber, email);//craetes new contact with contact constructor
-        if(!checkDuplicacy(contact)){
+        Contact contact = new Contact(firstName, lastName, address, city, state, zip, phoneNumber, email);// craetes new
+                                                                                                          // contact
+                                                                                                          // with
+                                                                                                          // contact
+                                                                                                          // constructor
+        if (!checkDuplicacy(contact)) {
             contacts.add(contact);
-            if(cityDirectory.containsKey(city)){
-                ArrayList<Contact> cityPersonList=cityDirectory.get(city);
-                cityPersonList.add(contact);            
-            }else{
-                ArrayList<Contact> cityPersonList=new ArrayList<>();
+            if (cityDirectory.containsKey(city)) {
+                ArrayList<Contact> cityPersonList = cityDirectory.get(city);
                 cityPersonList.add(contact);
-                cityDirectory.put(city,cityPersonList);
+            } else {
+                ArrayList<Contact> cityPersonList = new ArrayList<>();
+                cityPersonList.add(contact);
+                cityDirectory.put(city, cityPersonList);
             }
 
-            if(stateDirectory.containsKey(state)){
-                ArrayList<Contact> statePersonList=stateDirectory.get(state);
-                statePersonList.add(contact);            
-            }else{ 
-                ArrayList<Contact> statePersonList=new ArrayList<>();
+            if (stateDirectory.containsKey(state)) {
+                ArrayList<Contact> statePersonList = stateDirectory.get(state);
                 statePersonList.add(contact);
-                stateDirectory.put(state,statePersonList);
+            } else {
+                ArrayList<Contact> statePersonList = new ArrayList<>();
+                statePersonList.add(contact);
+                stateDirectory.put(state, statePersonList);
             }
-          
-        log.info("A new contact has been created in the address book");
-        log.info("first name: " + contact.getFirstName() + "\nlast name: " + contact.getLastName() + "\naddress: "
-                + contact.getAddress() + "\ncity: " + contact.getCity() + "\nstate: " + contact.getZip()
-                + "\nphone number: " + contact.getPhoneNumber() + "\nEmail: " + contact.getEmail());//prints newly added contact
-                return contact;
+
+            log.info("A new contact has been created in the address book");
+            log.info("first name: " + contact.getFirstName() + "\nlast name: " + contact.getLastName() + "\naddress: "
+                    + contact.getAddress() + "\ncity: " + contact.getCity() + "\nstate: " + contact.getZip()
+                    + "\nphone number: " + contact.getPhoneNumber() + "\nEmail: " + contact.getEmail());// prints newly
+                                                                                                        // added contact
+            return contact;
         }
         log.info("The provided contact already exists");
         return null;
     }
-    /*@param - contact
+
+    /*
+     * @param - contact
+     * 
      * @describe method to check uniqueness of contact by name in contact list
+     * 
      * @returns ubniqueness - boolean value
      */
-    public boolean checkDuplicacy(Contact contact){
-        boolean[] duplicate=new boolean[1];
-        Contact[] contactArr=new Contact[1];
-        duplicate[0]=false;
-        contactArr[0]=contact;
-       
-        contacts.forEach(currentContact->{
-            if(currentContact.equals(contactArr[0])){
-                duplicate[0]=true;
+    public boolean checkDuplicacy(Contact contact) {
+        boolean[] duplicate = new boolean[1];
+        Contact[] contactArr = new Contact[1];
+        duplicate[0] = false;
+        contactArr[0] = contact;
+
+        contacts.forEach(currentContact -> {
+            if (currentContact.equals(contactArr[0])) {
+                duplicate[0] = true;
             }
         });
 
         return duplicate[0];
     }
-    //search a contact in address book with the name of the contact 
+
+    // search a contact in address book with the name of the contact
     public Contact searchContact(String name) {
         Contact matchedContact = null;
         for (int i = 0; i < contacts.size(); i++) {
@@ -99,13 +107,16 @@ public class AddressBook {
                 break;
             }
         }
-        //searches for the contact with name if found returns the contact object or null
+        // searches for the contact with name if found returns the contact object or
+        // null
         return matchedContact;
     }
-    //edit a contact with the name provided.
+
+    // edit a contact with the name provided.
     public void editContact(String name) {
-        Contact contact = searchContact(name);//searches for the contact in the address book first
-        if (contact != null) {//if there is contact the asks for the relevant field to be edited and asks for the field to be updated
+        Contact contact = searchContact(name);// searches for the contact in the address book first
+        if (contact != null) {// if there is contact the asks for the relevant field to be edited and asks for
+                              // the field to be updated
             log.info("1.Change the first name");
             log.info("2.Change the last name");
             log.info("3.Change the address");
@@ -180,13 +191,14 @@ public class AddressBook {
         }
 
     }
-    //delete a contact with nme of the contact
+
+    // delete a contact with nme of the contact
     void deleteContact(String name) {
 
         Contact contact = searchContact(name);
-        if (contact != null) {//if contact does exist then contact is removed from contcts arraylist
-            int index = contacts.indexOf(contact);//gets the index of the contact in contacts array list
-            Contact deletedContact = contacts.remove(index);//removes contact
+        if (contact != null) {// if contact does exist then contact is removed from contcts arraylist
+            int index = contacts.indexOf(contact);// gets the index of the contact in contacts array list
+            Contact deletedContact = contacts.remove(index);// removes contact
             if (deletedContact.equals(contact)) {
                 log.info("contact was deleted succesfully");
             }
@@ -196,59 +208,76 @@ public class AddressBook {
 
     }
 
-    //add multiple contacts in the address book
+    // add multiple contacts in the address book
     void addMultipleContacts() {
         String answer = "Y";
-        ArrayList<Contact> contacts=new ArrayList<Contact>();
-        //Asks the user if you want to create anotehr contact.if answer is yes .new contact is created by calling the create contact method which creates invidual contact
-        while (answer.equals("Y") || answer.equals("Yes") || answer.equals("yes") || answer.equals("y") || answer.equals("yes")) {
-            Contact contact=createContact();
+        ArrayList<Contact> contacts = new ArrayList<Contact>();
+        // Asks the user if you want to create anotehr contact.if answer is yes .new
+        // contact is created by calling the create contact method which creates
+        // invidual contact
+        while (answer.equals("Y") || answer.equals("Yes") || answer.equals("yes") || answer.equals("y")
+                || answer.equals("yes")) {
+            Contact contact = createContact();
             contacts.add(contact);
             log.info("do you want to create another contact(Y/N)");
             answer = sc.nextLine();
         }
-       
 
     }
 
     /*
-   * @param location-String doesn't matter city or state,persons -ArrayList<Contact>
-   * @describe prints all the people in the require city or stae
-   */
-    public void getPersonsByCityState(ArrayList<Contact> persons,String locationName){
-        contacts.stream().filter(contact->{
-            
-            return (contact.getCity().equals(locationName) ||contact.getState().equals(locationName));
-        }).forEach(contact->{
+     * @param location-String doesn't matter city or state,persons
+     * -ArrayList<Contact>
+     * 
+     * @describe prints all the people in the require city or stae
+     */
+    public void getPersonsByCityState(ArrayList<Contact> persons, String locationName) {
+        contacts.stream().filter(contact -> {
+
+            return (contact.getCity().equals(locationName) || contact.getState().equals(locationName));
+        }).forEach(contact -> {
             persons.add(contact);
         });
     }
 
+    public void getPersonsByLocationDictionary(String locationName, String locationType) {
+        if (locationType == "city") {
+            ArrayList<Contact> cityPersonList = cityDirectory.get(locationName);
+            log.info("persons in the city " + locationName + " are: ");
+            cityPersonList.forEach(person -> {
+                log.info("first name: " + person.getFirstName() + "\nlast name: " + person.getLastName() + "\naddress: "
+                        + person.getAddress() + "\ncity: " + person.getCity() + "\nstate: " + person.getZip()
+                        + "\nphone number: " + person.getPhoneNumber() + "\nEmail: " + person.getEmail());
 
-    public void getPersonsByLocationDictionary(String locationName,String locationType){
-       if(locationType=="city"){
-        ArrayList<Contact> cityPersonList=cityDirectory.get(locationName);
-        log.info("persons in the city "+locationName+" are: ");
-        cityPersonList.forEach(person->{
-            log.info("first name: " + person.getFirstName() + "\nlast name: " + person.getLastName() + "\naddress: "
-                + person.getAddress() + "\ncity: " + person.getCity() + "\nstate: " + person.getZip()
-                + "\nphone number: " + person.getPhoneNumber() + "\nEmail: " + person.getEmail());
-       
-        }); 
-       }else{
-        ArrayList<Contact> statePersonList=stateDirectory.get(locationName);
-        log.info("person in the State "+locationName+" are: ");
-        statePersonList.forEach(person->{
-            log.info("first name: " + person.getFirstName() + "\nlast name: " + person.getLastName() + "\naddress: "
-                + person.getAddress() + "\ncity: " + person.getCity() + "\nstate: " + person.getZip()
-                + "\nphone number: " + person.getPhoneNumber() + "\nEmail: " + person.getEmail());
-       
-        }); 
-       }
+            });
+        } else {
+            ArrayList<Contact> statePersonList = stateDirectory.get(locationName);
+            log.info("person in the State " + locationName + " are: ");
+            statePersonList.forEach(person -> {
+                log.info("first name: " + person.getFirstName() + "\nlast name: " + person.getLastName() + "\naddress: "
+                        + person.getAddress() + "\ncity: " + person.getCity() + "\nstate: " + person.getZip()
+                        + "\nphone number: " + person.getPhoneNumber() + "\nEmail: " + person.getEmail());
+
+            });
+        }
     }
-    //print the address book
+
+    private void countpersonByCityState(String locationName, String locationType) {
+        if (locationType == "city") {
+            ArrayList<Contact> cityPersonList = cityDirectory.get(locationName);
+            log.info("number of persons in the city " + locationName + " are: " + cityPersonList.stream().count());
+
+        } else {
+            ArrayList<Contact> statePersonList = stateDirectory.get(locationName);
+            log.info("person in the State " + locationName + " are: " + statePersonList.stream().count());
+
+        }
+    }
+
+    // print the address book
     void printAddressBook() {
-        if (contacts.size() > 0) {//iterate through contacts list and print he details of each contact if there are any contacts 
+        if (contacts.size() > 0) {// iterate through contacts list and print he details of each contact if there
+                                  // are any contacts
             for (int i = 0; i < contacts.size(); i++)
                 log.info("first name: " + contacts.get(i).getFirstName() + "\nlast name: "
                         + contacts.get(i).getLastName()
@@ -256,16 +285,15 @@ public class AddressBook {
                         + "\nstate: " + contacts.get(i).getZip() + "\nphone number: " + contacts.get(i).getPhoneNumber()
                         + "\nEmail: " + contacts.get(i).getEmail());
         } else {
-            log.info("Address book is empty");//else print empty address book
+            log.info("Address book is empty");// else print empty address book
         }
 
     }
 
-
-    //program starts from here .asks for option from the user to perform a task
+    // program starts from here .asks for option from the user to perform a task
     public void startProgram() {
         while (true) {
-            String name,city,state;
+            String name, city, state;
             log.info("1.Create a new contact in the address book");
             log.info("2.Edit a contact");
             log.info("3.Delete a contact");
@@ -273,7 +301,9 @@ public class AddressBook {
             log.info("5.Print the address book");
             log.info("6.View Persons by city");
             log.info("7.View Persons by state");
-            log.info("8.Close Address Book");
+            log.info("8.View count of Persons by city");
+            log.info("9.View count of Persons by state");
+            log.info("10.Close Address Book");
             log.info("enter your choice: ");
             int choice = sc.nextInt();
             sc.nextLine();
@@ -301,18 +331,28 @@ public class AddressBook {
                     break;
                 case 6:
                     log.info("enter the city: ");
-                    city=sc.nextLine();
+                    city = sc.nextLine();
                     getPersonsByLocationDictionary(city, "city");
                     break;
                 case 7:
                     log.info("enter the state: ");
-                    state=sc.nextLine();
+                    state = sc.nextLine();
                     getPersonsByLocationDictionary(state, "state");
                     break;
                 case 8:
+                    log.info("enter the state: ");
+                    city = sc.nextLine();
+                    countpersonByCityState(city, "city");
+                    break;
+                case 9:
+                    log.info("enter the state: ");
+                    state = sc.nextLine();
+                    countpersonByCityState(state, "state");
+                    break;
+                case 10:
                     log.info("Closing address book......");
                     return;
-                
+
                 default:
                     log.info("enter one of the options above");
                     break;
