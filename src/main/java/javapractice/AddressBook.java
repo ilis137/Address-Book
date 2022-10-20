@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -242,8 +243,9 @@ public class AddressBook {
         });
     }
 
-     /*
+    /*
      * @describe view persons in a city or state
+     * 
      * @param-location name String,location type-city/state String
      */
     public void getPersonsByLocationDictionary(String locationName, String locationType) {
@@ -267,8 +269,10 @@ public class AddressBook {
             });
         }
     }
+
     /*
      * @describe count persons in a city or state
+     * 
      * @param-location name String,location type-city/state String
      */
     private void countpersonByCityState(String locationName, String locationType) {
@@ -282,21 +286,57 @@ public class AddressBook {
 
         }
     }
+
     /*
      * @describe sort the address book by first name and print the address book
      * 
      */
     private void sortByName() {
         ArrayList<Contact> sortedContacts = (ArrayList<Contact>) contacts.stream()
-                .sorted(Comparator.comparing(Contact::getFirstName))//use streams and comparator 
+                .sorted(Comparator.comparing(Contact::getFirstName))// use streams and comparator
                 .collect(Collectors.toList());
         log.info("printing the sorted address book by name");
         printAddressBook(sortedContacts);
     }
 
+     /*
+     * @describe sort the address book by city/state/zip code and print the address book
+     * 
+     */
+    private void sortByCityStateZip() {
+        log.info("Sort by: \n 1.city\n2.state\3.ZIP\nenter your choice: ");
+        int sortBy = sc.nextInt();
+        sc.nextLine();
+        ArrayList<Contact> sortedContacts = null;
+
+        switch (sortBy) {
+            case 1:
+                sortedContacts = (ArrayList<Contact>) contacts.stream()
+                        .sorted(Comparator.comparing(Contact::getCity))// use streams and comparator
+                        .collect(Collectors.toList());
+                log.info("printing the sorted address book by city");
+                break;
+            case 2:
+                sortedContacts = (ArrayList<Contact>) contacts.stream()
+                        .sorted(Comparator.comparing(Contact::getState))// use streams and comparator
+                        .collect(Collectors.toList());
+                log.info("printing the sorted address book by state");
+                break;
+            case 3:
+                sortedContacts = (ArrayList<Contact>) contacts.stream()
+                        .sorted(Comparator.comparing(Contact::getZip))// use streams and comparator
+                        .collect(Collectors.toList());
+                log.info("printing the sorted address book by ZIP");
+                break;
+            default:
+                log.info("enter a valid option");
+        }
+        printAddressBook(sortedContacts);
+    }
+
     // print the address book
     void printAddressBook(ArrayList<Contact> contactList) {
-        ArrayList<Contact> contacts=contactList==null?this.contacts:contactList;
+        ArrayList<Contact> contacts = contactList == null ? this.contacts : contactList;
         if (contacts.size() > 0) {// iterate through contacts list and print he details of each contact if there
                                   // are any contacts
             for (int i = 0; i < contacts.size(); i++)
@@ -325,7 +365,7 @@ public class AddressBook {
             log.info("8.View count of Persons by city");
             log.info("9.View count of Persons by state");
             log.info("10.Sort addressbook by name");
-            log.info("11.");
+            log.info("11.Sort by city/state/zip");
             log.info("12.Close Address Book");
             log.info("enter your choice: ");
             int choice = sc.nextInt();
@@ -376,10 +416,12 @@ public class AddressBook {
                     log.info("sorting address book by name: ");
                     sortByName();
                     break;
+                case 11:
+                    sortByCityStateZip();
+                    break;
                 case 12:
                     log.info("Closing address book......");
                     return;
-
                 default:
                     log.info("enter one of the options above");
                     break;
