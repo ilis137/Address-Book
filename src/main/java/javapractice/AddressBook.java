@@ -1,9 +1,11 @@
 package javapractice;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -240,6 +242,10 @@ public class AddressBook {
         });
     }
 
+     /*
+     * @describe view persons in a city or state
+     * @param-location name String,location type-city/state String
+     */
     public void getPersonsByLocationDictionary(String locationName, String locationType) {
         if (locationType == "city") {
             ArrayList<Contact> cityPersonList = cityDirectory.get(locationName);
@@ -261,7 +267,10 @@ public class AddressBook {
             });
         }
     }
-
+    /*
+     * @describe count persons in a city or state
+     * @param-location name String,location type-city/state String
+     */
     private void countpersonByCityState(String locationName, String locationType) {
         if (locationType == "city") {
             ArrayList<Contact> cityPersonList = cityDirectory.get(locationName);
@@ -273,9 +282,21 @@ public class AddressBook {
 
         }
     }
+    /*
+     * @describe sort the address book by first name and print the address book
+     * 
+     */
+    private void sortByName() {
+        ArrayList<Contact> sortedContacts = (ArrayList<Contact>) contacts.stream()
+                .sorted(Comparator.comparing(Contact::getFirstName))//use streams and comparator 
+                .collect(Collectors.toList());
+        log.info("printing the sorted address book by name");
+        printAddressBook(sortedContacts);
+    }
 
     // print the address book
-    void printAddressBook() {
+    void printAddressBook(ArrayList<Contact> contactList) {
+        ArrayList<Contact> contacts=contactList==null?this.contacts:contactList;
         if (contacts.size() > 0) {// iterate through contacts list and print he details of each contact if there
                                   // are any contacts
             for (int i = 0; i < contacts.size(); i++)
@@ -303,7 +324,9 @@ public class AddressBook {
             log.info("7.View Persons by state");
             log.info("8.View count of Persons by city");
             log.info("9.View count of Persons by state");
-            log.info("10.Close Address Book");
+            log.info("10.Sort addressbook by name");
+            log.info("11.");
+            log.info("12.Close Address Book");
             log.info("enter your choice: ");
             int choice = sc.nextInt();
             sc.nextLine();
@@ -327,7 +350,7 @@ public class AddressBook {
                     break;
                 case 5:
                     log.info("Printing the address book");
-                    printAddressBook();
+                    printAddressBook(null);
                     break;
                 case 6:
                     log.info("enter the city: ");
@@ -350,6 +373,10 @@ public class AddressBook {
                     countpersonByCityState(state, "state");
                     break;
                 case 10:
+                    log.info("sorting address book by name: ");
+                    sortByName();
+                    break;
+                case 12:
                     log.info("Closing address book......");
                     return;
 
