@@ -292,51 +292,57 @@ public class AddressBook {
      * 
      */
     private void sortByName() {
-        ArrayList<Contact> sortedContacts = (ArrayList<Contact>) contacts.stream()
+        contacts.stream()
                 .sorted(Comparator.comparing(Contact::getFirstName))// use streams and comparator
-                .collect(Collectors.toList());
+                .forEach(contact -> {
+                    log.info(contact.toString());
+                });
         log.info("printing the sorted address book by name");
-        printAddressBook(sortedContacts);
     }
 
-     /*
-     * @describe sort the address book by city/state/zip code and print the address book
+    /*
+     * @describe sort the address book by city/state/zip code and print the address
+     * book
      * 
      */
     private void sortByCityStateZip() {
         log.info("Sort by: \n 1.city\n2.state\3.ZIP\nenter your choice: ");
         int sortBy = sc.nextInt();
         sc.nextLine();
-        ArrayList<Contact> sortedContacts = null;
 
         switch (sortBy) {
             case 1:
-                sortedContacts = (ArrayList<Contact>) contacts.stream()
-                        .sorted(Comparator.comparing(Contact::getCity))// use streams and comparator
-                        .collect(Collectors.toList());
                 log.info("printing the sorted address book by city");
+                contacts.stream()
+                        .sorted(Comparator.comparing(Contact::getCity))// use streams and comparator
+                        .forEach(contact -> {
+                            log.info(contact.toString());
+                        });
                 break;
             case 2:
-                sortedContacts = (ArrayList<Contact>) contacts.stream()
-                        .sorted(Comparator.comparing(Contact::getState))// use streams and comparator
-                        .collect(Collectors.toList());
                 log.info("printing the sorted address book by state");
+                contacts.stream()
+                        .sorted(Comparator.comparing(Contact::getState))// use streams and comparator
+                        .forEach(contact -> {
+                            log.info(contact.toString());
+                        });
                 break;
             case 3:
-                sortedContacts = (ArrayList<Contact>) contacts.stream()
-                        .sorted(Comparator.comparing(Contact::getZip))// use streams and comparator
-                        .collect(Collectors.toList());
                 log.info("printing the sorted address book by ZIP");
+                contacts.stream()
+                        .sorted(Comparator.comparing(Contact::getZip))// use streams and comparator
+                        .forEach(contact -> {
+                            log.info(contact.toString());
+                        });
                 break;
             default:
                 log.info("enter a valid option");
         }
-        printAddressBook(sortedContacts);
+
     }
 
     // print the address book
-    void printAddressBook(ArrayList<Contact> contactList) {
-        ArrayList<Contact> contacts = contactList == null ? this.contacts : contactList;
+    void printAddressBook() {
         if (contacts.size() > 0) {// iterate through contacts list and print he details of each contact if there
                                   // are any contacts
             for (int i = 0; i < contacts.size(); i++)
@@ -390,7 +396,7 @@ public class AddressBook {
                     break;
                 case 5:
                     log.info("Printing the address book");
-                    printAddressBook(null);
+                    printAddressBook();
                     break;
                 case 6:
                     log.info("enter the city: ");

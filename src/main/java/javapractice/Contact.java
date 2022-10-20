@@ -98,4 +98,12 @@ class Contact {
 		Contact contactObj = (Contact) obj;
 		return (firstName==contactObj.firstName) && (lastName==contactObj.lastName);
 	}
+
+
+    @Override
+    public String toString(){
+       return  "first name: " + firstName + "\nlast name: " + lastName + "\naddress: "
+       + address + "\ncity: " + city + "\nstate: " + zip
+       + "\nphone number: " + phoneNumber + "\nEmail: " + email;
+    }
 }
