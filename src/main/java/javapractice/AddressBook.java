@@ -242,8 +242,9 @@ public class AddressBook {
         });
     }
 
-     /*
+    /*
      * @describe view persons in a city or state
+     * 
      * @param-location name String,location type-city/state String
      */
     public void getPersonsByLocationDictionary(String locationName, String locationType) {
@@ -267,8 +268,10 @@ public class AddressBook {
             });
         }
     }
+
     /*
      * @describe count persons in a city or state
+     * 
      * @param-location name String,location type-city/state String
      */
     private void countpersonByCityState(String locationName, String locationType) {
@@ -282,21 +285,21 @@ public class AddressBook {
 
         }
     }
+
     /*
      * @describe sort the address book by first name and print the address book
      * 
      */
     private void sortByName() {
-        ArrayList<Contact> sortedContacts = (ArrayList<Contact>) contacts.stream()
-                .sorted(Comparator.comparing(Contact::getFirstName))//use streams and comparator 
-                .collect(Collectors.toList());
         log.info("printing the sorted address book by name");
-        printAddressBook(sortedContacts);
+        contacts.stream()
+                .sorted(Comparator.comparing(Contact::getFirstName))// use streams and comparator
+                .forEach(contact -> log.info(contact.toString()));
+
     }
 
     // print the address book
-    void printAddressBook(ArrayList<Contact> contactList) {
-        ArrayList<Contact> contacts=contactList==null?this.contacts:contactList;
+    void printAddressBook() {
         if (contacts.size() > 0) {// iterate through contacts list and print he details of each contact if there
                                   // are any contacts
             for (int i = 0; i < contacts.size(); i++)
@@ -350,7 +353,7 @@ public class AddressBook {
                     break;
                 case 5:
                     log.info("Printing the address book");
-                    printAddressBook(null);
+                    printAddressBook();
                     break;
                 case 6:
                     log.info("enter the city: ");
