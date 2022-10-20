@@ -338,6 +338,10 @@ public class AddressBook {
             default:
                 log.info("enter a valid option");
         }
+        log.info("printing the sorted address book by name");
+        contacts.stream()
+                .sorted(Comparator.comparing(Contact::getFirstName))// use streams and comparator
+                .forEach(contact -> log.info(contact.toString()));
 
     }
 
