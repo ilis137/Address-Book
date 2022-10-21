@@ -17,6 +17,8 @@ public class AddressBook {
     private ArrayList<Contact> contacts = new ArrayList<Contact>();
     private HashMap<String, ArrayList<Contact>> cityDirectory = new HashMap<>();
     private HashMap<String, ArrayList<Contact>> stateDirectory = new HashMap<>();
+    private FileIOService addressBookFileIOService = new FileIOService();
+    private final String ADDRESSBOOK_FILE_NAME = "E:\\brglabz\\RFP\\day-9\\addressbook\\src\\main\\resources\\addressBookFile.txt";
     Scanner sc = new Scanner(System.in);
 
     // create a contact in address book
@@ -67,9 +69,7 @@ public class AddressBook {
             }
 
             log.info("A new contact has been created in the address book");
-            log.info("first name: " + contact.getFirstName() + "\nlast name: " + contact.getLastName() + "\naddress: "
-                    + contact.getAddress() + "\ncity: " + contact.getCity() + "\nstate: " + contact.getZip()
-                    + "\nphone number: " + contact.getPhoneNumber() + "\nEmail: " + contact.getEmail());// prints newly
+            log.info(contact.toString());// prints newly
                                                                                                         // added contact
             return contact;
         }
@@ -186,9 +186,7 @@ public class AddressBook {
             }
             log.info("contact edited successfully");
 
-            log.info("first name: " + contact.getFirstName() + "\nlast name: " + contact.getLastName() + "\naddress: "
-                    + contact.getAddress() + "\ncity: " + contact.getCity() + "\nstate: " + contact.getZip()
-                    + "\nphone number: " + contact.getPhoneNumber() + "\nEmail: " + contact.getEmail());
+            log.info(contact.toString());
         } else {
             log.info("contact does not exist");
         }
@@ -353,12 +351,20 @@ public class AddressBook {
                 log.info("first name: " + contacts.get(i).getFirstName() + "\nlast name: "
                         + contacts.get(i).getLastName()
                         + "\naddress: " + contacts.get(i).getAddress() + "\ncity: " + contacts.get(i).getCity()
-                        + "\nstate: " + contacts.get(i).getZip() + "\nphone number: " + contacts.get(i).getPhoneNumber()
+                        + "\nstate: " + contacts.get(i).getState()+"\nzip: "+contacts.get(i).getZip() + "\nphone number: " + contacts.get(i).getPhoneNumber()
                         + "\nEmail: " + contacts.get(i).getEmail());
         } else {
             log.info("Address book is empty");// else print empty address book
         }
 
+    }
+
+    public void writeAddressBook() {
+        addressBookFileIOService.write(contacts, ADDRESSBOOK_FILE_NAME);
+    }
+
+    public void readAddressBook() {
+        contacts = (ArrayList<Contact>) addressBookFileIOService.readData(ADDRESSBOOK_FILE_NAME);
     }
 
     // program starts from here .asks for option from the user to perform a task
@@ -376,7 +382,9 @@ public class AddressBook {
             log.info("9.View count of Persons by state");
             log.info("10.Sort addressbook by name");
             log.info("11.Sort by city/state/zip");
-            log.info("12.Close Address Book");
+            log.info("12.Write Address book to file");
+            log.info("13.Read Address book from file");
+            log.info("14.Close Address Book");
             log.info("enter your choice: ");
             int choice = sc.nextInt();
             sc.nextLine();
@@ -430,6 +438,12 @@ public class AddressBook {
                     sortByCityStateZip();
                     break;
                 case 12:
+                    writeAddressBook();
+                    break;
+                case 13:
+                    readAddressBook();
+                    break;
+                case 14:
                     log.info("Closing address book......");
                     return;
                 default:

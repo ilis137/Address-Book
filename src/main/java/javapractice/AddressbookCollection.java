@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 public class AddressbookCollection {
   HashMap<String, AddressBook> directories = new HashMap<String, AddressBook>();
-  private static final Logger log = LogManager.getLogger(AddressBook.class);
+  private static final Logger log = LogManager.getLogger(AddressbookCollection.class);
   Scanner sc = new Scanner(System.in);
 
   // open a address book with name provided as paramater.it searches for the

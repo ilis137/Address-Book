@@ -21,6 +21,7 @@ class Contact {
         this.phoneNumber = phoneNumber;
         this.email = email;
     }
+    public Contact(){}
 
     public String getFirstName() {
         return firstName;
@@ -101,8 +102,8 @@ class Contact {
 
     @Override
     public String toString(){
-        return "first name: " + firstName + "\nlast name: " + lastName + "\naddress: "
-        + address + "\ncity: " + city + "\nstate: " + zip
+        return "\nfirst name: " + firstName + "\nlast name: " + lastName + "\naddress: "
+        + address + "\ncity: " + city + "\nstate: " + state + "\nzip: "+zip
         + "\nphone number: " + phoneNumber + "\nEmail: " + email;
     }
 }
